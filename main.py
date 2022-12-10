@@ -16,6 +16,17 @@ label_two = Label(text='->\nto\n->')
 label_two.grid(column=2, row=2)
 
 # Creating the two list box.
+choices = {'in': 'meter', 'out': 'kilometer'}
+
+
+def listbox_select_in(event):
+    choices['in'] = list_box_in.get(list_box_in.curselection())
+
+
+def listbox_select_out(event):
+    choices['out'] = list_box_out.get(list_box_out.curselection())
+
+
 list_box_in = Listbox(width=10, exportselection=0)
 list_box_out = Listbox(width=10, exportselection=0)
 units_list = ['millimeter', 'centimeter', 'decimeter', 'meter', 'decameter', 'hectometer',
@@ -27,6 +38,9 @@ for item in units_list:
 list_box_in.grid(column=1, row=2)
 list_box_out.grid(column=3, row=2)
 
+list_box_in.bind("<<ListboxSelect>>", listbox_select_in)
+list_box_out.bind("<<ListboxSelect>>", listbox_select_out)
+
 # Creating the Entry
 
 entry = Entry(width=15)
@@ -34,10 +48,23 @@ entry.grid(column=1, columnspan=3, row=3)
 
 # Creating the button.
 
-convert_button = Button(text='Convert')
-# quit_button = Button(text='Quit')
+val = 1
+
+
+def click_button():
+    user_number = entry.get()
+    try:
+        user_number = float(user_number)
+        label_tree.config(text=f"{user_number}")
+    except ValueError:
+        label_tree.config(text=f"Sorry, '{user_number}' \nis not an option.")
+
+
+convert_button = Button(text='Convert', command=click_button)
 
 convert_button.grid(column=1, columnspan=3, row=4)
+
+# quit_button = Button(text='Quit')
 # quit_button.grid(column=5, row=0)
 
 # Output interface.
